@@ -48,7 +48,7 @@ func connectToApi(api string) []byte {
 	return responseData
 }
 
-func generateRandomNumber(responseData []byte) int {
+func generatePseudoRandomIndex(responseData []byte) int {
 	var randomNumber int
 	var responseObject Response
 
@@ -72,7 +72,7 @@ func printCapitalAndCountry(randomNumber int, responseData []byte) (string, stri
 
 func guessHandler(w http.ResponseWriter, r *http.Request) {
 	var apiResponse = connectToApi(api)
-	var randomNumber = generateRandomNumber(apiResponse)
+	var randomNumber = generatePseudoRandomIndex(apiResponse)
 
 	guessCountry, guessCapital := printCapitalAndCountry(randomNumber, apiResponse)
 
