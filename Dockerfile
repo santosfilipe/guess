@@ -7,8 +7,8 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o /guess
+RUN go build -o bin/guess pkg/main.go
 
 EXPOSE 3000
 
-CMD [ "/guess" ]
+CMD [ "bin/guess" ]
