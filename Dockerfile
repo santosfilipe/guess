@@ -9,6 +9,6 @@ COPY . .
 
 RUN go build -o bin/guess pkg/main.go
 
-EXPOSE 3000
+EXPOSE 8888
 
 CMD [ "bin/guess" ]

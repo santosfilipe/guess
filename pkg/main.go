@@ -9,9 +9,11 @@ import (
 )
 
 func main() {
+	log.Println("GuessApp is running!")
+
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "3000"
+		port = "8888"
 	}
 
 	mux := http.NewServeMux()

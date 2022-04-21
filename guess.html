@@ -3,8 +3,6 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>{{ .Title }}</title>
     <meta name="description" content="A simple game create to play with my wife, where we guess a capital of a given country.">
     <meta name="author" content="Filipe dos Santos">
@@ -12,20 +10,27 @@
     <link rel="icon" href="/favicon.ico">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <style>
-        .guess {
-            border: 1px outset;
-            background-color: lightblue;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
 </head>
 
-<body>
-    <div class="guess">
-        <h2>{{ .Country }}</h2>
-        <h2>{{ .Capital }}</h2>
-        <button type="button" onClick="window.location.reload();">Click to play again!</button> 
+<div class="container">
+    <div class="row" style="background-color: #9b4dca;">
+        <div class="column" style="color: #d1c3c3;"><h4>Guess!</h4></div>
     </div>
-</body>
+
+    <div class="row">
+        <div class="column">
+            <p>{{ .Country }}</p>
+            <p>{{ .Capital }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <button type="button" onClick="window.location.reload();">Click to play again!</button>
+        </div>
+    </div>
+
+</div>
 </html>

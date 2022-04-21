@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"log"
 	"math/rand"
 	"net/http"
 	"text/template"
@@ -8,8 +9,6 @@ import (
 
 	"github.com/santosfilipe/guess/pkg/data"
 )
-
-var api = "https://countriesnow.space/api/v0.1/countries/capital"
 
 type Page struct {
 	Title   string
@@ -35,10 +34,14 @@ func printCapitalAndCountry(randomNumber int, responseData *data.Response) (stri
 }
 
 func GuessHandler(w http.ResponseWriter, r *http.Request) {
-	var apiResponse = data.ConnectToApi(api)
-	var randomNumber = GeneratePseudoRandomIndex(apiResponse)
+	gc := data.New()
+	geoData, err := gc.RetrieveGeoData()
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	guessCountry, guessCapital := printCapitalAndCountry(randomNumber, apiResponse)
+	randomNumber := GeneratePseudoRandomIndex(geoData)
+	guessCountry, guessCapital := printCapitalAndCountry(randomNumber, geoData)
 
 	data := Page{
 		Title:   "Guess",

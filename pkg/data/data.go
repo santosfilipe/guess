@@ -2,11 +2,10 @@ package data
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
+	"time"
 )
 
 type Response struct {
@@ -20,23 +19,55 @@ type Data struct {
 	Name    string `json:"name"`
 }
 
-func ConnectToApi(api string) *Response {
-	var responseObject Response
+type geoApiClient struct {
+	httpClient *http.Client
+	urlPrefix  string
+}
 
-	response, err := http.Get(api)
+func New() *geoApiClient {
+	gc := geoApiClient{
+		httpClient: &http.Client{
+			Transport: &http.Transport{
+				MaxIdleConns:       10,
+				IdleConnTimeout:    30 * time.Second,
+				DisableCompression: true,
+			},
+		},
+		urlPrefix: "https://countriesnow.space/api/v0.1/countries/capital",
+	}
+	return &gc
+}
 
+func (gc *geoApiClient) newRequest() (*http.Request, error) {
+	req, err := http.NewRequest("GET", gc.urlPrefix, nil)
 	if err != nil {
-		fmt.Print(err.Error())
-		os.Exit(1)
+		return nil, err
 	}
 
-	responseData, err := ioutil.ReadAll(response.Body)
+	return req, nil
+}
 
+func (gc *geoApiClient) RetrieveGeoData() (*Response, error) {
+	var responseObject Response
+
+	req, err := gc.newRequest()
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := gc.httpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	responseData, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		log.Fatal(err)
+		return nil, err
 	}
 
 	json.Unmarshal(responseData, &responseObject)
 
-	return &responseObject
+	return &responseObject, nil
 }
